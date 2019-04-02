@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  users:
+    build:
+      context: users
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python main.py"
+    environment:
+      - DEBUG=0
+      - DB_URI=mongodb://mongodb:27017/users
+    depends_on:
+      - mongodb
+  
+  offers:
+    build:
+      context: offers
+    ports:
+      - "8001:8000"
+    command: >
+      sh -c "python main.py"
+    environment:
+      - DEBUG=0
+      - DB_URI=mongodb://mongodb:27017/offers
+      - USER_API=http://users:8000/user/
+    depends_on:
+      - mongodb
+      - users
+  
+  mongodb:
+    image: mongo:4.0.8-xenial
