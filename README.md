@@ -25,7 +25,7 @@ Users {
 Offer {
     user_id: int,
     title: str,
-	text: str,
+    text: str,
     created_at: int
 }
 ```
