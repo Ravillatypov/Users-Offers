@@ -63,13 +63,11 @@ async def get_offers(request):
         if offer:
             return json(offer.get_dict(), status=200)
     elif user_id:
-        offers = await Offers.find({'user_id': user_id})
+        offers = await Offers.find(filter={'user_id': user_id}, sort='user_id')
     else:
-        offers = await Offers.find()
-    if offers.count():
-        result = [i.get_dict() for i in offers]
-        return json(result, status=200)
-    return json([], status=200)
+        offers = await Offers.find(sort='user_id')
+    result = [i.get_dict() for i in offers.objects]
+    return json(result, status=200)
 
 if __name__ == '__main__':
     is_debug = environ.get('DEBUG', True)
